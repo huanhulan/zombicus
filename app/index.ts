@@ -62,21 +62,26 @@ if (supports.filter(support => !support).length) {
                         const sCharacters = simple(windowSize, characterSize);
 
                         sCharacters.listen(characters => {
-                            ctx.clearRect(0, 0, windowSize.width, windowSize.height);
-                            characters.forEach(c => {
-                                if (c.velocity.x < 0) {
-                                    ctx.drawImage(c.type === CharacterType.SAPIENS
-                                            ? homoSepientLeftPic
-                                            : homoZombicusLeftPic,
-                                        c.pos.x,
-                                        c.pos.y);
-                                } else {
-                                    ctx.drawImage(c.type === CharacterType.SAPIENS
-                                            ? homoSepientRightPic
-                                            : homoZombicusRightPic,
-                                        c.pos.x,
-                                        c.pos.y);
-                                }
+                            characters
+                                .sort((a, b) => a.pos.y === b.pos.y ? 0 : a.pos.y < b.pos.y ? -1 : 1);
+                            requestAnimationFrame(() => {
+                                ctx.clearRect(0, 0, windowSize.width, windowSize.height);
+                                characters
+                                    .forEach(c => {
+                                        if (c.velocity.x < 0) {
+                                            ctx.drawImage(c.type === CharacterType.SAPIENS
+                                                    ? homoSepientLeftPic
+                                                    : homoZombicusLeftPic,
+                                                c.pos.x,
+                                                c.pos.y);
+                                        } else {
+                                            ctx.drawImage(c.type === CharacterType.SAPIENS
+                                                    ? homoSepientRightPic
+                                                    : homoZombicusRightPic,
+                                                c.pos.x,
+                                                c.pos.y);
+                                        }
+                                    });
                             });
                         });
                     });
