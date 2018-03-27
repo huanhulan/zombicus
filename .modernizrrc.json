@@ -1,0 +1,7 @@
+{
+  "minify": true,
+  "feature-detects": [
+    "test/css/flexbox",
+    "test/canvas"
+  ]
+}
