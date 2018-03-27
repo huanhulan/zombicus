@@ -5,6 +5,7 @@ import SimpleHomoSapiens from "../SimpleHomoSapiens";
 import {IPoint} from "../types";
 import tick from "./tick";
 
+// does nothing but generate humans to touring around the scene, no zombies :D
 export default (windowSize, characterSize) => {
     const {cTime, sTick} = tick();
     const chars: Array<Stream<Character>> = [];

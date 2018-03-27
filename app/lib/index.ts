@@ -2,6 +2,7 @@ import {Stream} from "sodiumjs";
 import Vector from "vectory";
 import {IPoint} from "../types";
 
+// using balanced binary tree to merge the streams for efficiency.
 function balanceMerge<T>(input: Array<Stream<T>>, f) {
     if (input.length === 0) {
         return new Stream<T>();

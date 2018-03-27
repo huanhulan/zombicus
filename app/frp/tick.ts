@@ -1,5 +1,6 @@
 import {CellLoop, MillisecondsTimerSystem, StreamLoop, Unit} from "sodiumjs";
 
+// animation loop/timer
 export default (fps = 60) => {
     const toWait = Math.ceil(1000 / fps);
     const sys = new MillisecondsTimerSystem();
@@ -8,6 +9,12 @@ export default (fps = 60) => {
     const sTick = new StreamLoop<Unit>();
     const sTimeIdeal = sys.at(cTargetTime).map(t => t + toWait);
     const cTime = cTargetTime.map(t => (t - t0) * 0.001);
+    /**
+     * Ideally, the cTarget would be a sequence with step of 17,
+     * but since the javascript is single process, there will
+     * be frames left for the animation and other computational work.
+     * But the margin of target time and ideal time will always be 17.
+     */
     cTargetTime.loop(sTimeIdeal.map(t => t + toWait).hold(t0));
     sTick.loop(sTimeIdeal.map(t => Unit.UNIT));
 
