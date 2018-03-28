@@ -8,7 +8,7 @@ interface IPoint {
     y: number;
 }
 
-interface IWindowSize {
+interface ISize {
     width: number;
     height: number;
 }
@@ -16,5 +16,5 @@ interface IWindowSize {
 export {
     CharacterType,
     IPoint,
-    IWindowSize,
+    ISize,
 };

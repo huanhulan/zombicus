@@ -6,6 +6,8 @@ declare class vectory {
     public yx: vectory;
     public yy: vectory;
 
+    constructor(x: number, y: number)
+
     public static from: (list: Array<number>) => vectory;
     public static fromAngle: (angle: number, magnitude: number) => vectory;
     public static parse: (str: string) => vectory;

@@ -4,10 +4,10 @@ import * as homoSapienLeft from "./assets/homo-sapien-left.png";
 import * as homoSapienRight from "./assets/homo-sapien-right.png";
 import * as homoZombicusLeft from "./assets/homo-zombicus-left.png";
 import * as homoZombicusRight from "./assets/homo-zombicus-right.png";
+import simple from "./frp/simple";
 import lib from "./lib";
 import {CharacterType} from "./types";
 
-import simple from "./frp/simple";
 import "./style/index.scss";
 
 const modernizr = modernizrConfig;
@@ -59,7 +59,7 @@ if (supports.filter(support => !support).length) {
                     };
 
                     Transaction.run(() => {
-                        const sCharacters = simple(windowSize, characterSize);
+                        const sCharacters = simple(windowSize);
 
                         sCharacters.listen(characters => {
                             characters
