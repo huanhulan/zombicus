@@ -1,4 +1,4 @@
-import {Stream} from "sodiumjs";
+import {Cell, Stream} from "sodiumjs";
 import Vector from "vectory";
 import {holeColor} from "../constants";
 import {IPoint} from "../types";
@@ -20,6 +20,9 @@ function balanceMerge<T>(input: Array<Stream<T>>, f) {
 }
 
 const lib = {
+    p2v(p: IPoint){
+        return Vector.from([p.x, p.y]);
+    },
     v2p(p: IPoint, v: Vector) {
         return {
             x: p.x + v.x,
@@ -36,6 +39,17 @@ const lib = {
         }) as Promise<HTMLImageElement>;
     },
     balanceMerge,
+    sequence<A>(input: Cell<A>[]): Cell<A[]>{
+        return input.reduce(
+            (res: Cell<A[]>, c: Cell<A>) => res.lift(
+                c, (list0: A[], a: A) => {
+                    list0.push(a);
+                    return list0;
+                }
+            ),
+            new Cell<A[]>([])
+        );
+    },
     drawHoles(ctx: CanvasRenderingContext2D, path: IPoint[], icon: HTMLImageElement){
         if (path.length) {
             const {x, y} = path[0];

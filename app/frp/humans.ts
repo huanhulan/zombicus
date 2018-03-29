@@ -18,8 +18,9 @@ export default (windowSize: ISize, characterSize: ISize, world: World) => {
             if (world.hitsObstacle(pos)) {
                 break;
             }
+            // step's unit is Second
             const h = new HomoSapiens(world, id, pos, cTime, sTick, Math.ceil(1000 / fps) / 1000);
-            chars.push(Operational.updates(h.character));
+            chars.push(Operational.updates(h.cCharacter));
             id++;
         }
     }

@@ -7,7 +7,8 @@ import * as homoZombicusLeft from "./assets/homo-zombicus-left.png";
 import * as homoZombicusRight from "./assets/homo-zombicus-right.png";
 import * as roadiusConium from "./assets/roadius-conium.png";
 // import simple from "./frp/simple";
-import humans from "./frp/humans";
+// import humans from "./frp/humans";
+import characters from "./frp/characters";
 import lib from "./lib";
 import {CharacterType, IPoint} from "./types";
 import World from "./World";
@@ -71,7 +72,7 @@ if (supports.filter(support => !support).length) {
                 const scence = new World(windowSize, characterSize, holesPolygons);
                 const main = () => {
                     Transaction.run(() => {
-                        const sCharacters = humans(windowSize, characterSize, scence);
+                        const sCharacters = characters(windowSize, characterSize, scence);
 
                         sCharacters.listen(characters => {
                             characters

@@ -15,7 +15,7 @@ export default (windowSize) => {
         for (let y = 100; y < windowSize.height; y += 100) {
             const pos = {x, y} as IPoint;
             const h = new SimpleHomoSapiens(id, pos, cTime, sTick);
-            chars.push(Operational.updates(h.character));
+            chars.push(Operational.updates(h.cCharacter));
             id++;
         }
     }

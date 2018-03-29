@@ -13,8 +13,11 @@ interface ISize {
     height: number;
 }
 
+type Optional<T> = T|null;
+
 export {
     CharacterType,
     IPoint,
     ISize,
+    Optional,
 };
