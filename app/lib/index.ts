@@ -1,5 +1,6 @@
 import {Stream} from "sodiumjs";
 import Vector from "vectory";
+import {holeColor} from "../constants";
 import {IPoint} from "../types";
 
 // using balanced binary tree to merge the streams for efficiency.
@@ -35,6 +36,22 @@ const lib = {
         }) as Promise<HTMLImageElement>;
     },
     balanceMerge,
+    drawHoles(ctx: CanvasRenderingContext2D, path: IPoint[], icon: HTMLImageElement){
+        if (path.length) {
+            const {x, y} = path[0];
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.fillStyle = holeColor;
+            ctx.moveTo(x, y);
+            path.slice(1).forEach(({x, y}) => {
+                ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            path.forEach(({x, y}) => ctx.drawImage(icon, x - icon.width / 2, y - (icon.height - 5)))
+        }
+    }
 };
 
 export default lib;

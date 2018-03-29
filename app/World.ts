@@ -13,11 +13,11 @@ class World {
     }
 
     public hitsHole(pt: IPoint) {
-        return this.holes.reduce(h => h.containsPoint(pt), false);
+        return this.holes.reduce((res, h) => res || h.containsPoint(pt), false);
     }
 
     public hitsObstacle(pt: IPoint) {
-        return this.hitsHole(pt) ||
+        return this.hitsHole({x: pt.x + this.characterSize.width / 2, y: pt.y + this.characterSize.height - 6}) ||
             pt.x <= 0 || pt.x >= (this.windowSize.width - this.characterSize.width) ||
             pt.y <= 0 || pt.y >= (this.windowSize.height - this.characterSize.height);
     }

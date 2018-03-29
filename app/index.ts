@@ -1,12 +1,16 @@
+import Polygon from "polygon";
 import {Transaction} from "sodiumjs";
 import * as modernizrConfig from "./../.modernizrrc.json";
 import * as homoSapienLeft from "./assets/homo-sapien-left.png";
 import * as homoSapienRight from "./assets/homo-sapien-right.png";
 import * as homoZombicusLeft from "./assets/homo-zombicus-left.png";
 import * as homoZombicusRight from "./assets/homo-zombicus-right.png";
-import simple from "./frp/simple";
+import * as roadiusConium from "./assets/roadius-conium.png";
+// import simple from "./frp/simple";
+import humans from "./frp/humans";
 import lib from "./lib";
-import {CharacterType} from "./types";
+import {CharacterType, IPoint} from "./types";
+import World from "./World";
 
 import "./style/index.scss";
 
@@ -34,15 +38,20 @@ if (supports.filter(support => !support).length) {
         lib.getImgPromise(homoSapienRight),
         lib.getImgPromise(homoZombicusLeft),
         lib.getImgPromise(homoZombicusRight),
+        lib.getImgPromise(roadiusConium),
         onloadPromise,
     ])
         .then(res => {
+                const canvasWith = 1680;
+                const canvasHeight = 720;
                 const homoSepientLeftPic = res[0] as HTMLImageElement;
                 const homoSepientRightPic = res[1] as HTMLImageElement;
                 const homoZombicusLeftPic = res[2] as HTMLImageElement;
                 const homoZombicusRightPic = res[3] as HTMLImageElement;
-                $container.innerHTML = "<canvas id='canvas' width='1680' height='720' style='width: 100%;" +
-                    "border:1px solid;box-sizing: border-box;'></canvas>";
+                const roadiusConiumPic = res[4] as HTMLImageElement;
+
+                $container.innerHTML = `<canvas id='canvas' width='${canvasWith}' height='${canvasHeight}'
+                    style='width: 100%;border:1px solid;box-sizing: border-box;'></canvas>`;
                 const $canvas = document.getElementById("canvas") as HTMLCanvasElement;
                 const ctx = $canvas.getContext("2d") as CanvasRenderingContext2D;
                 const characterSize = {
@@ -51,21 +60,27 @@ if (supports.filter(support => !support).length) {
                     height: Math.max(homoSepientLeftPic.height, homoSepientRightPic.height,
                         homoZombicusLeftPic.height, homoZombicusRightPic.height),
                 };
-
+                const windowSize = {
+                    width: $canvas.width,
+                    height: $canvas.height,
+                };
+                const holesPaths: Array<IPoint[]> = [
+                    [{x: 200, y: 200}, {x: 200, y: 700}, {x: 1000, y: 380}]
+                ];
+                const holesPolygons = holesPaths.map(p => new Polygon(p));
+                const scence = new World(windowSize, characterSize, holesPolygons);
                 const main = () => {
-                    const windowSize = {
-                        width: $canvas.width,
-                        height: $canvas.height,
-                    };
-
                     Transaction.run(() => {
-                        const sCharacters = simple(windowSize);
+                        const sCharacters = humans(windowSize, characterSize, scence);
 
                         sCharacters.listen(characters => {
                             characters
                                 .sort((a, b) => a.pos.y === b.pos.y ? 0 : a.pos.y < b.pos.y ? -1 : 1);
+
+                            // draw
                             requestAnimationFrame(() => {
                                 ctx.clearRect(0, 0, windowSize.width, windowSize.height);
+                                holesPaths.forEach(p => lib.drawHoles(ctx, p, roadiusConiumPic));
                                 characters
                                     .forEach(c => {
                                         if (c.velocity.x < 0) {

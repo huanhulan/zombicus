@@ -1,9 +1,8 @@
 import {Cell, CellLoop, Stream, Unit} from "sodiumjs";
 import Character from "./Character";
+import {speed} from "./constants";
 import Trajectory from "./SimpleTrajectory";
 import {CharacterType, IPoint} from "./types";
-
-const speed = 80;
 
 class SimpleHomoSapiens {
     public character: Cell<Character>;

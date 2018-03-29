@@ -2,7 +2,7 @@ import Vector from "vectory";
 import lib from "./lib";
 import {IPoint} from "./types";
 
-class Trajectory {
+class SimpleTrajectory {
     public t0;
     public orig;
     public period;
@@ -26,4 +26,4 @@ class Trajectory {
     }
 }
 
-export default Trajectory;
+export default SimpleTrajectory;

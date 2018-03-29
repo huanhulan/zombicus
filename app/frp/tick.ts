@@ -1,7 +1,8 @@
 import {CellLoop, MillisecondsTimerSystem, StreamLoop, Unit} from "sodiumjs";
+import {defaultFps} from "../constants";
 
 // animation loop/timer
-export default (fps = 60) => {
+export default (fps = defaultFps) => {
     const toWait = Math.ceil(1000 / fps);
     const sys = new MillisecondsTimerSystem();
     const t0 = sys.time.sample();
@@ -21,5 +22,6 @@ export default (fps = 60) => {
     return {
         cTime,
         sTick,
+        fps
     };
 };
