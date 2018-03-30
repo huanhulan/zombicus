@@ -36,6 +36,7 @@
     "sodiumjs": "^1.0.8",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.19.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.2",
     "vectory": "^1.2.2",
     "webpack": "3.5.4",

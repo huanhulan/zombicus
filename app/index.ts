@@ -41,8 +41,8 @@ if (supports.filter(support => !support).length) {
         lib.getImgPromise(homoZombicusRight),
         lib.getImgPromise(roadiusConium),
         onloadPromise,
-    ])
-        .then(res => {
+    ]).then(
+        res => {
             const canvasWith = document.documentElement.clientWidth;
             const canvasHeight = document.documentElement.clientHeight;
             const homoSepientLeftPic = res[0] as HTMLImageElement;
@@ -104,6 +104,6 @@ if (supports.filter(support => !support).length) {
             };
             main();
         },
-            e => e,
+        e => $container.innerHTML = e,
     );
 }
