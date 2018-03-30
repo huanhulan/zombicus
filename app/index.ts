@@ -1,7 +1,12 @@
+// tslint:disable-next-line
 const homoSapienLeft = require("./assets/homo-sapien-left.png");
+// tslint:disable-next-line
 const homoSapienRight = require("./assets/homo-sapien-right.png");
+// tslint:disable-next-line
 const homoZombicusLeft = require("./assets/homo-zombicus-left.png");
+// tslint:disable-next-line
 const homoZombicusRight = require("./assets/homo-zombicus-right.png");
+// tslint:disable-next-line
 const roadiusConium = require("./assets/roadius-conium.png");
 
 import Polygon from "polygon";
@@ -77,7 +82,11 @@ if (supports.filter(support => !support).length) {
 
                     sCharacters.listen(chs => {
                         chs
-                            .sort((a, b) => a.pos.y === b.pos.y ? 0 : a.pos.y < b.pos.y ? -1 : 1);
+                            .sort((a, b) => a.pos.y === b.pos.y
+                                ? 0
+                                : a.pos.y < b.pos.y
+                                    ? -1
+                                    : 1);
 
                         // draw
                         requestAnimationFrame(() => {
