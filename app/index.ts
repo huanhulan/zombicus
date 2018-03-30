@@ -105,6 +105,6 @@ if (supports.filter(support => !support).length) {
             };
             main();
         },
-        // e => $container.innerHTML = JSON.stringify(e),
+        e => $container.innerHTML = JSON.stringify(e),
     );
 }
