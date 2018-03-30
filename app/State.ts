@@ -1,7 +1,7 @@
 import Vector from "vectory";
 import Character from "./Character";
 import lib from "./lib";
-import {CharacterType, IPoint, Optional} from "./types/index";
+import { CharacterType, IPoint, Optional } from "./types/index";
 
 class State {
     public t0: number;
@@ -35,8 +35,8 @@ class State {
         scene.forEach(ch => {
             if (ch.id !== self) {
                 const dist = Vector.distance(lib.p2v(ch.pos), lib.p2v(this.orig));
-                if (ch.type === CharacterType.ZOMBICUS && dist > 60) {
-                } else if (best === null || dist < bestDist) {
+                if ((ch.type === CharacterType.ZOMBICUS && dist <= 60)
+                    || (best === null || dist < bestDist)) {
                     bestDist = dist;
                     best = ch;
                 }
@@ -52,7 +52,7 @@ class State {
     }
 
     public positionAt(t: number) {
-        const {x, y} = lib.v2p(this.orig, this.velocity.mul(t - this.t0));
+        const { x, y } = lib.v2p(this.orig, this.velocity.mul(t - this.t0));
         return {
             x,
             y,

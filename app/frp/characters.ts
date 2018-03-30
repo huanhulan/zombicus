@@ -1,15 +1,15 @@
-import {Cell, CellLoop, Operational, Stream, Unit} from "sodiumjs";
+import { Cell, CellLoop, Operational, Stream, Unit } from "sodiumjs";
 import Character from "../Character";
-import lib from "../lib";
 import HomoSapiens from "../HomoSapiens";
 import HomoZombicus from "../HomoZombicus";
-import {IPoint, ISize} from "../types";
-import tick from "./tick";
+import lib from "../lib";
+import { IPoint, ISize } from "../types";
 import World from "../World";
+import tick from "./tick";
 
 // worlds with zombies and humans, but no bites :D
 export default (windowSize: ISize, characterSize: ISize, world: World) => {
-    const {cTime, sTick, fps} = tick();
+    const { cTime, sTick, fps } = tick();
     const charStreams: Array<Stream<Character>> = [];
     const charCells: Array<Cell<Character>> = [];
     const cScene = new CellLoop<Character[]>();
@@ -17,7 +17,7 @@ export default (windowSize: ISize, characterSize: ISize, world: World) => {
 
     for (let x = 100; x < world.windowSize.width; x += 200) {
         for (let y = 100; y < world.windowSize.height; y += 200) {
-            const pos = {x, y} as IPoint;
+            const pos = { x, y } as IPoint;
             if (world.hitsObstacle(pos)) {
                 break;
             }

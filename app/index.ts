@@ -1,5 +1,5 @@
 import Polygon from "polygon";
-import {Transaction} from "sodiumjs";
+import { Transaction } from "sodiumjs";
 import * as modernizrConfig from "./../.modernizrrc.json";
 import * as homoSapienLeft from "./assets/homo-sapien-left.png";
 import * as homoSapienRight from "./assets/homo-sapien-right.png";
@@ -10,7 +10,7 @@ import * as roadiusConium from "./assets/roadius-conium.png";
 // import humans from "./frp/humans";
 import characters from "./frp/characters";
 import lib from "./lib";
-import {CharacterType, IPoint} from "./types";
+import { CharacterType, IPoint } from "./types";
 import World from "./World";
 
 import "./style/index.scss";
@@ -43,67 +43,67 @@ if (supports.filter(support => !support).length) {
         onloadPromise,
     ])
         .then(res => {
-                const canvasWith = 1680;
-                const canvasHeight = 720;
-                const homoSepientLeftPic = res[0] as HTMLImageElement;
-                const homoSepientRightPic = res[1] as HTMLImageElement;
-                const homoZombicusLeftPic = res[2] as HTMLImageElement;
-                const homoZombicusRightPic = res[3] as HTMLImageElement;
-                const roadiusConiumPic = res[4] as HTMLImageElement;
+            const canvasWith = 1680;
+            const canvasHeight = 720;
+            const homoSepientLeftPic = res[0] as HTMLImageElement;
+            const homoSepientRightPic = res[1] as HTMLImageElement;
+            const homoZombicusLeftPic = res[2] as HTMLImageElement;
+            const homoZombicusRightPic = res[3] as HTMLImageElement;
+            const roadiusConiumPic = res[4] as HTMLImageElement;
 
-                $container.innerHTML = `<canvas id='canvas' width='${canvasWith}' height='${canvasHeight}'
+            $container.innerHTML = `<canvas id='canvas' width='${canvasWith}' height='${canvasHeight}'
                     style='width: 100%;border:1px solid;box-sizing: border-box;'></canvas>`;
-                const $canvas = document.getElementById("canvas") as HTMLCanvasElement;
-                const ctx = $canvas.getContext("2d") as CanvasRenderingContext2D;
-                const characterSize = {
-                    width: Math.max(homoSepientLeftPic.width, homoSepientRightPic.width,
-                        homoZombicusLeftPic.width, homoZombicusRightPic.width),
-                    height: Math.max(homoSepientLeftPic.height, homoSepientRightPic.height,
-                        homoZombicusLeftPic.height, homoZombicusRightPic.height),
-                };
-                const windowSize = {
-                    width: $canvas.width,
-                    height: $canvas.height,
-                };
-                const holesPaths: Array<IPoint[]> = [
-                    [{x: 200, y: 200}, {x: 200, y: 700}, {x: 1000, y: 380}]
-                ];
-                const holesPolygons = holesPaths.map(p => new Polygon(p));
-                const scence = new World(windowSize, characterSize, holesPolygons);
-                const main = () => {
-                    Transaction.run(() => {
-                        const sCharacters = characters(windowSize, characterSize, scence);
+            const $canvas = document.getElementById("canvas") as HTMLCanvasElement;
+            const ctx = $canvas.getContext("2d") as CanvasRenderingContext2D;
+            const characterSize = {
+                width: Math.max(homoSepientLeftPic.width, homoSepientRightPic.width,
+                    homoZombicusLeftPic.width, homoZombicusRightPic.width),
+                height: Math.max(homoSepientLeftPic.height, homoSepientRightPic.height,
+                    homoZombicusLeftPic.height, homoZombicusRightPic.height),
+            };
+            const windowSize = {
+                width: $canvas.width,
+                height: $canvas.height,
+            };
+            const holesPaths: IPoint[][] = [
+                [{ x: 200, y: 200 }, { x: 200, y: 700 }, { x: 1000, y: 380 }],
+            ];
+            const holesPolygons = holesPaths.map(p => new Polygon(p));
+            const scence = new World(windowSize, characterSize, holesPolygons);
+            const main = () => {
+                Transaction.run(() => {
+                    const sCharacters = characters(windowSize, characterSize, scence);
 
-                        sCharacters.listen(characters => {
-                            characters
-                                .sort((a, b) => a.pos.y === b.pos.y ? 0 : a.pos.y < b.pos.y ? -1 : 1);
+                    sCharacters.listen(chs => {
+                        chs
+                            .sort((a, b) => a.pos.y === b.pos.y ? 0 : a.pos.y < b.pos.y ? -1 : 1);
 
-                            // draw
-                            requestAnimationFrame(() => {
-                                ctx.clearRect(0, 0, windowSize.width, windowSize.height);
-                                holesPaths.forEach(p => lib.drawHoles(ctx, p, roadiusConiumPic));
-                                characters
-                                    .forEach(c => {
-                                        if (c.velocity.x < 0) {
-                                            ctx.drawImage(c.type === CharacterType.SAPIENS
-                                                    ? homoSepientLeftPic
-                                                    : homoZombicusLeftPic,
-                                                c.pos.x,
-                                                c.pos.y);
-                                        } else {
-                                            ctx.drawImage(c.type === CharacterType.SAPIENS
-                                                    ? homoSepientRightPic
-                                                    : homoZombicusRightPic,
-                                                c.pos.x,
-                                                c.pos.y);
-                                        }
-                                    });
-                            });
+                        // draw
+                        requestAnimationFrame(() => {
+                            ctx.clearRect(0, 0, windowSize.width, windowSize.height);
+                            holesPaths.forEach(p => lib.drawHoles(ctx, p, roadiusConiumPic));
+                            chs
+                                .forEach(c => {
+                                    if (c.velocity.x < 0) {
+                                        ctx.drawImage(c.type === CharacterType.SAPIENS
+                                            ? homoSepientLeftPic
+                                            : homoZombicusLeftPic,
+                                            c.pos.x,
+                                            c.pos.y);
+                                    } else {
+                                        ctx.drawImage(c.type === CharacterType.SAPIENS
+                                            ? homoSepientRightPic
+                                            : homoZombicusRightPic,
+                                            c.pos.x,
+                                            c.pos.y);
+                                    }
+                                });
                         });
                     });
-                };
-                main();
-            },
+                });
+            };
+            main();
+        },
             e => e,
-        );
+    );
 }

@@ -39,15 +39,15 @@ const lib = {
         }) as Promise<HTMLImageElement>;
     },
     balanceMerge,
-    sequence<A>(input: Cell<A>[]): Cell<A[]> {
+    sequence<A>(input: Array<Cell<A>>): Cell<A[]> {
         return input.reduce(
             (res: Cell<A[]>, c: Cell<A>) => res.lift(
                 c, (list0: A[], a: A) => {
                     list0.push(a);
                     return [...list0];
-                }
+                },
             ),
-            new Cell<A[]>([])
+            new Cell<A[]>([]),
         );
     },
     drawHoles(ctx: CanvasRenderingContext2D, path: IPoint[], icon: HTMLImageElement) {
@@ -57,15 +57,16 @@ const lib = {
             ctx.lineWidth = 1;
             ctx.fillStyle = holeColor;
             ctx.moveTo(x, y);
-            path.slice(1).forEach(({ x, y }) => {
-                ctx.lineTo(x, y);
+            path.slice(1).forEach(point => {
+                ctx.lineTo(point.x, point.y);
             });
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
-            path.forEach(({ x, y }) => ctx.drawImage(icon, x - icon.width / 2, y - (icon.height - 5)))
+            path.forEach(point => ctx.drawImage(icon, point.x - icon.width / 2,
+                point.y - (icon.height - 5)));
         }
-    }
+    },
 };
 
 export default lib;

@@ -1,5 +1,5 @@
-import {CellLoop, MillisecondsTimerSystem, StreamLoop, Unit} from "sodiumjs";
-import {defaultFps} from "../constants";
+import { CellLoop, MillisecondsTimerSystem, StreamLoop, Unit } from "sodiumjs";
+import { defaultFps } from "../constants";
 
 // animation loop/timer
 export default (fps = defaultFps) => {
@@ -22,6 +22,6 @@ export default (fps = defaultFps) => {
     return {
         cTime,
         sTick,
-        fps
+        fps,
     };
 };
