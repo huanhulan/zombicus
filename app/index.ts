@@ -43,8 +43,8 @@ if (supports.filter(support => !support).length) {
         onloadPromise,
     ])
         .then(res => {
-            const canvasWith = 1680;
-            const canvasHeight = 720;
+            const canvasWith = document.documentElement.clientWidth;
+            const canvasHeight = document.documentElement.clientHeight;
             const homoSepientLeftPic = res[0] as HTMLImageElement;
             const homoSepientRightPic = res[1] as HTMLImageElement;
             const homoZombicusLeftPic = res[2] as HTMLImageElement;
