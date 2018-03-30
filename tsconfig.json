@@ -30,5 +30,10 @@
   ],
   "files": [
     ".modernizrrc.json.d.ts"
+  ],
+  // types option has been previously configured
+  "types": [
+    // add node as an option
+    "node"
   ]
 }

@@ -1,11 +1,12 @@
+const homoSapienLeft = require("./assets/homo-sapien-left.png");
+const homoSapienRight = require("./assets/homo-sapien-right.png");
+const homoZombicusLeft = require("./assets/homo-zombicus-left.png");
+const homoZombicusRight = require("./assets/homo-zombicus-right.png");
+const roadiusConium = require("./assets/roadius-conium.png");
+
 import Polygon from "polygon";
 import { Transaction } from "sodiumjs";
 import * as modernizrConfig from "./../.modernizrrc.json";
-import * as homoSapienLeft from "./assets/homo-sapien-left.png";
-import * as homoSapienRight from "./assets/homo-sapien-right.png";
-import * as homoZombicusLeft from "./assets/homo-zombicus-left.png";
-import * as homoZombicusRight from "./assets/homo-zombicus-right.png";
-import * as roadiusConium from "./assets/roadius-conium.png";
 // import simple from "./frp/simple";
 // import humans from "./frp/humans";
 import characters from "./frp/characters";
@@ -17,7 +18,7 @@ import "./style/index.scss";
 
 const modernizr = modernizrConfig;
 const $container = document.getElementById("viewport") as HTMLDivElement;
-const features = ["flexbox", "canvas", "promises"];
+const features = Object.keys(modernizr);
 const supports = features.map(f => modernizr[f]);
 
 if (supports.filter(support => !support).length) {
@@ -104,6 +105,6 @@ if (supports.filter(support => !support).length) {
             };
             main();
         },
-        e => $container.innerHTML = e,
+        // e => $container.innerHTML = JSON.stringify(e),
     );
 }
