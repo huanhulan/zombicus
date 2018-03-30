@@ -39,7 +39,7 @@ module.exports = function (cssLoaderOptions, sassLoaderOptions) {
                     use: [{
                         loader: 'url-loader',
                         options: {
-                            limit: 128
+                            limit: 10240
                         }
                     }]
                 }, {
