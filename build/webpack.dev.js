@@ -22,6 +22,7 @@ module.exports = merge(common(cssLoaderOptions, sassLoaderOptions), {
         compress: true,
         port: 3000
     },
+    devtool: 'eval-source-map',
     output: {
         filename: "bundle.js",
         path: __dirname + "/../dist",

@@ -2,13 +2,14 @@ import Vector from "vectory";
 import Character from "./Character";
 import lib from "./lib";
 import { CharacterType, IPoint, Optional } from "./types/index";
+import World from "./World";
 
 class State {
     public t0: number;
     public orig: IPoint;
     public velocity: Vector;
 
-    constructor(t0: number, orig: IPoint, self: number, scene: Character[], speed: number) {
+    constructor(t0: number, orig: IPoint, self: number, scene: Character[], speed: number, world, step) {
         this.t0 = t0;
         this.orig = orig;
         const other: Optional<Character> = this.nearest(self, scene);
@@ -17,6 +18,10 @@ class State {
             this.velocity = Vector.sub(lib.p2v(this.orig), lib.p2v(other.pos))
                 .normalize()
                 .mul(other.type === CharacterType.SAPIENS ? speed : -speed);
+
+            if (world.hitsBoundary(this.positionAt(t0 + step * 2))) {
+                this.velocity = this.velocity.mul(-1);
+            }
         } else {
             this.velocity = new Vector(0, 0);
         }
@@ -32,14 +37,13 @@ class State {
         let bestDist = 0.0;
         let best: Optional<Character> = null;
 
-        scene.forEach(ch => {
-            if (ch.id !== self) {
-                const dist = Vector.distance(lib.p2v(ch.pos), lib.p2v(this.orig));
-                if ((ch.type === CharacterType.ZOMBICUS && dist <= 60)
-                    || (best === null || dist < bestDist)) {
-                    bestDist = dist;
-                    best = ch;
-                }
+        scene.filter(ch => ch.id !== self).forEach(ch => {
+            const dist = Vector.distance(lib.p2v(ch.pos), lib.p2v(this.orig));
+            if (ch.type === CharacterType.ZOMBICUS && dist > 60) {
+                return;
+            } else if (best === null || dist < bestDist) {
+                bestDist = dist;
+                best = ch;
             }
         });
 

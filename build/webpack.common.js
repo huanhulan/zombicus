@@ -17,7 +17,9 @@ module.exports = function (cssLoaderOptions, sassLoaderOptions) {
         module: {
             rules: [
                 {
-                    test: /\.ts/, loaders: ['babel-loader', 'awesome-typescript-loader'], exclude: /node_modules/
+                    test: /\.ts/,
+                    loaders: ['babel-loader', 'awesome-typescript-loader'],
+                    exclude: /node_modules/
                 },
                 {
                     test: /\.scss$/,

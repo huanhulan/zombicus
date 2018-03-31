@@ -40,15 +40,17 @@ const lib = {
     },
     balanceMerge,
     sequence<A>(input: Array<Cell<A>>): Cell<A[]> {
-        return input.reduce(
-            (res: Cell<A[]>, c: Cell<A>) => res.lift(
-                c, (list0: A[], a: A) => {
-                    list0.push(a);
-                    return [...list0];
-                },
-            ),
-            new Cell<A[]>([]),
-        );
+        let out = new Cell([] as A[]);
+
+        for (const c of input) {
+            out = out.lift(c,
+                (list0, a) => {
+                    const list = [...list0];
+                    list.push(a);
+                    return list;
+                });
+        }
+        return out;
     },
     drawHoles(ctx: CanvasRenderingContext2D, path: IPoint[], icon: HTMLImageElement) {
         if (path.length) {

@@ -14,7 +14,8 @@ import { Transaction } from "sodiumjs";
 import * as modernizrConfig from "./../.modernizrrc.json";
 // import simple from "./frp/simple";
 // import humans from "./frp/humans";
-import characters from "./frp/characters";
+// import characters from "./frp/characters";
+import bite from "./frp/bite";
 import lib from "./lib";
 import { CharacterType, IPoint } from "./types";
 import World from "./World";
@@ -72,13 +73,13 @@ if (supports.filter(support => !support).length) {
                 height: $canvas.height,
             };
             const holesPaths: IPoint[][] = [
-                [{ x: 200, y: 200 }, { x: 200, y: 700 }, { x: 1000, y: 380 }],
+                // [{ x: 200, y: 200 }, { x: 200, y: 700 }, { x: 1000, y: 380 }],
             ];
             const holesPolygons = holesPaths.map(p => new Polygon(p));
             const scence = new World(windowSize, characterSize, holesPolygons);
             const main = () => {
                 Transaction.run(() => {
-                    const sCharacters = characters(windowSize, characterSize, scence);
+                    const sCharacters = bite(windowSize, characterSize, scence);
 
                     sCharacters.listen(chs => {
                         chs
