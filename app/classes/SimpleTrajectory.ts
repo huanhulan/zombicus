@@ -1,6 +1,6 @@
 import Vector from "vectory";
-import lib from "./lib";
-import {IPoint} from "./types";
+import lib from "../lib";
+import { IPoint } from "../types";
 
 class SimpleTrajectory {
     public t0;
@@ -18,7 +18,7 @@ class SimpleTrajectory {
     }
 
     public positionAt(t) {
-        const {x, y} = lib.v2p(this.orig, this.velocity.mul(t - this.t0));
+        const { x, y } = lib.v2p(this.orig, this.velocity.mul(t - this.t0));
         return {
             x,
             y,

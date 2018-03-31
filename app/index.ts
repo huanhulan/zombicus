@@ -11,14 +11,14 @@ const roadiusConium = require("./assets/roadius-conium.png");
 
 import Polygon from "polygon";
 import { Transaction } from "sodiumjs";
-import * as modernizrConfig from "./../.modernizrrc.json";
+import * as modernizrConfig from "../.modernizrrc.json";
+import World from "./classes/World";
 // import simple from "./frp/simple";
 // import humans from "./frp/humans";
 // import characters from "./frp/characters";
 import bite from "./frp/bite";
 import lib from "./lib";
 import { CharacterType, IPoint } from "./types";
-import World from "./World";
 
 import "./style/index.scss";
 

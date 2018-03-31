@@ -1,20 +1,20 @@
-import {Operational, Stream} from "sodiumjs";
-import Character from "../Character";
+import { Operational, Stream } from "sodiumjs";
+import Character from "../classes/Character";
+import HomoSapiens from "../classes/HomoSapiens";
+import World from "../classes/World";
 import lib from "../lib";
-import HomoSapiens from "../HomoSapiens";
-import {IPoint, ISize} from "../types";
+import { IPoint, ISize } from "../types";
 import tick from "./tick";
-import World from "../World";
 
 // humans that can detect obstacles, no zombies :D
 export default (windowSize: ISize, characterSize: ISize, world: World) => {
-    const {cTime, sTick, fps} = tick();
+    const { cTime, sTick, fps } = tick();
     const chars: Array<Stream<Character>> = [];
     let id = 0;
 
     for (let x = 100; x < windowSize.width; x += 100) {
         for (let y = 100; y < windowSize.height; y += 100) {
-            const pos = {x, y} as IPoint;
+            const pos = { x, y } as IPoint;
             if (world.hitsObstacle(pos)) {
                 break;
             }

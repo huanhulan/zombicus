@@ -1,9 +1,9 @@
 import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
+import { humanSpeed, zombieSpeed } from "../constants";
+import { IPoint } from "../types";
 import Character from "./Character";
-import { humanSpeed, zombieSpeed } from "./constants";
 import HomoSapiens from "./HomoSapiens";
 import HomoZombicus from "./HomoZombicus";
-import { IPoint } from "./types";
 import World from "./World";
 
 class BietableHomoSapiens {

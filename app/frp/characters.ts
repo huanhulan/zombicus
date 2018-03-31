@@ -1,10 +1,10 @@
 import { Cell, CellLoop, Operational, Stream, Unit } from "sodiumjs";
-import Character from "../Character";
-import HomoSapiens from "../HomoSapiens";
-import HomoZombicus from "../HomoZombicus";
+import Character from "../classes/Character";
+import HomoSapiens from "../classes/HomoSapiens";
+import HomoZombicus from "../classes/HomoZombicus";
+import World from "../classes/World";
 import lib from "../lib";
 import { IPoint, ISize } from "../types";
-import World from "../World";
 import tick from "./tick";
 
 // worlds with zombies and humans, but no bites :D

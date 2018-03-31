@@ -1,10 +1,10 @@
 import { Cell, CellLoop, Operational, Stream, StreamLoop, Unit } from "sodiumjs";
-import BitableHomosapiens from "../BitableHomosapiens";
-import Character from "../Character";
-import HomoZombicus from "../HomoZombicus";
+import BitableHomosapiens from "../classes/BitableHomosapiens";
+import Character from "../classes/Character";
+import HomoZombicus from "../classes/HomoZombicus";
+import World from "../classes/World";
 import lib from "../lib";
 import { IPoint, ISize } from "../types";
-import World from "../World";
 import tick from "./tick";
 
 // doomed world :(
@@ -17,13 +17,13 @@ export default (windowSize: ISize, characterSize: ISize, world: World) => {
     const biteStreams: Array<Stream<number>> = [];
     let id = 0;
 
-    for (let x = 100; x < world.windowSize.width; x += 200) {
-        for (let y = 100; y < world.windowSize.height; y += 200) {
+    for (let x = 100; x < world.windowSize.width; x += 300) {
+        for (let y = 100; y < world.windowSize.height; y += 300) {
             const pos = { x, y } as IPoint;
             if (world.hitsObstacle(pos)) {
                 break;
             }
-            if (id % 4) {
+            if (id % 7) {
                 const h = new BitableHomosapiens(world, id, pos,
                     cTime, sTick, sBite, cScene, Math.ceil(1000 / fps) / 1000);
                 charCells.push(h.cCharacter);

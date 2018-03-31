@@ -1,5 +1,5 @@
 import polygon from "polygon";
-import { IPoint, ISize } from "./types";
+import { IPoint, ISize } from "../types";
 
 class World {
     public windowSize: ISize;

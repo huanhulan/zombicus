@@ -1,7 +1,8 @@
 import Vector from "vectory";
+import { attackRange } from "../constants";
+import lib from "../lib";
+import { CharacterType, IPoint, Optional } from "../types/index";
 import Character from "./Character";
-import lib from "./lib";
-import { CharacterType, IPoint, Optional } from "./types/index";
 import World from "./World";
 
 class State {
@@ -9,7 +10,14 @@ class State {
     public orig: IPoint;
     public velocity: Vector;
 
-    constructor(t0: number, orig: IPoint, self: number, scene: Character[], speed: number, world, step) {
+    constructor(
+        t0: number,
+        orig: IPoint,
+        self: number,
+        scene: Character[],
+        speed: number,
+        world, step,
+    ) {
         this.t0 = t0;
         this.orig = orig;
         const other: Optional<Character> = this.nearest(self, scene);
@@ -33,8 +41,7 @@ class State {
      * @returns {Optional<Character>}
      * Eat the nearest human or go to the zombie within 60 pixels;
      */
-    public nearest(self: number, scene: Character[]) {
-        let bestDist = 0.0;
+    public nearest(self: number, scene: Character[], bestDist = attackRange) {
         let best: Optional<Character> = null;
 
         scene.filter(ch => ch.id !== self).forEach(ch => {

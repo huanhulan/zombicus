@@ -1,5 +1,5 @@
 import Vector from "vectory";
-import {CharacterType, IPoint} from "./types";
+import { CharacterType, IPoint } from "../types";
 
 class Character {
     public id: number;

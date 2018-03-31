@@ -1,14 +1,19 @@
-import {Cell, CellLoop, Stream, Unit} from "sodiumjs";
+import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
+import { humanSpeed } from "../constants";
+import { CharacterType, IPoint } from "../types";
 import Character from "./Character";
-import {humanSpeed} from "./constants";
 import Trajectory from "./SimpleTrajectory";
-import {CharacterType, IPoint} from "./types";
 
 class SimpleHomoSapiens {
     public cCharacter: Cell<Character>;
 
-    constructor(self: number, posInit: IPoint, cTime: Cell<number>, sTick: Stream<Unit>,
-                speed = humanSpeed) {
+    constructor(
+        self: number,
+        posInit: IPoint,
+        cTime: Cell<number>,
+        sTick: Stream<Unit>,
+        speed = humanSpeed,
+    ) {
         const cTraj = new CellLoop<Trajectory>();
         const sChange = sTick.snapshot3(cTraj, cTime,
             (u, trajectory, time) => time - trajectory.t0 >= trajectory.period

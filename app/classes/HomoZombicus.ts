@@ -1,10 +1,10 @@
 import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
 import Vector from "vectory";
+import { zombieSensPeriod, zombieSpeed } from "../constants";
+import lib from "../lib";
+import { CharacterType, IPoint, Optional } from "../types";
 import Character from "./Character";
-import { zombieSensPeriod, zombieSpeed } from "./constants";
-import lib from "./lib";
 import State from "./State";
-import { CharacterType, IPoint, Optional } from "./types";
 import World from "./World";
 
 class HomoZombicus {
