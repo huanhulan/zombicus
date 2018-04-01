@@ -17,8 +17,9 @@ class Trajectory {
             const angle = Math.random() * Math.PI * 2;
             this.velocity = new Vector(Math.sin(angle), Math.cos(angle))
                 .mul(speed);
-            // if the point will fall into the obstacle within 2 frames...
-            if (!world.hitsObstacle(this.positionAt(t0 + step * 2))) {
+
+            // if the point will fall into the obstacle within 12 frames...
+            if (!world.hitsObstacle(this.positionAt(t0 + step * 12))) {
                 break;
             }
         }

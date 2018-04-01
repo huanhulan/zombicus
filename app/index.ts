@@ -16,7 +16,8 @@ import World from "./classes/World";
 // import simple from "./frp/simple";
 // import humans from "./frp/humans";
 // import characters from "./frp/characters";
-import bite from "./frp/bite";
+// import bite from "./frp/bite";
+import dynamic from "./frp/dynamic";
 import lib from "./lib";
 import { CharacterType, IPoint } from "./types";
 
@@ -72,15 +73,31 @@ if (supports.filter(support => !support).length) {
                 width: $canvas.width,
                 height: $canvas.height,
             };
+
+            // window size of the example of the book is 700*500
             const holesPaths: IPoint[][] = [
-                // [{ x: 200, y: 200 }, { x: 200, y: 700 }, { x: 1000, y: 380 }],
+                lib.mergeToPolygonPath(
+                    [116, 134, 190, 248, 337, 245, 185].map(x => x / 700 * windowSize.width),
+                    [208, 129, 121, 79, 128, 172, 231].map(x => x / 500 * windowSize.height),
+                ),
+                lib.mergeToPolygonPath(
+                    [203, 250, 342, 455, 515, 467, 286].map(x => x / 700 * windowSize.width),
+                    [376, 337, 369, 350, 401, 438, 425].map(x => x / 500 * windowSize.height),
+                ),
+                lib.mergeToPolygonPath(
+                    [387, 371, 414, 503, 438, 412].map(x => x / 700 * windowSize.width),
+                    [200, 256, 308, 287, 215, 181].map(x => x / 500 * windowSize.height),
+                ),
+                lib.mergeToPolygonPath(
+                    [558, 536, 612, 603].map(x => x / 700 * windowSize.width),
+                    [124, 191, 228, 155].map(x => x / 500 * windowSize.height),
+                ),
             ];
             const holesPolygons = holesPaths.map(p => new Polygon(p));
             const scence = new World(windowSize, characterSize, holesPolygons);
             const main = () => {
                 Transaction.run(() => {
-                    const sCharacters = bite(windowSize, characterSize, scence);
-
+                    const sCharacters = dynamic(windowSize, characterSize, scence);
                     sCharacters.listen(chs => {
                         chs
                             .sort((a, b) => a.pos.y === b.pos.y

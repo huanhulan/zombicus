@@ -69,6 +69,12 @@ const lib = {
                 point.y - (icon.height - 5)));
         }
     },
+    mergeToPolygonPath(xs: number[], ys: number[]) {
+        if (xs.length !== ys.length) {
+            throw new Error("the length of coordinate list must be equal to each other.");
+        }
+        return xs.map((x, idx) => ({ x, y: ys[idx] }));
+    },
 };
 
 export default lib;

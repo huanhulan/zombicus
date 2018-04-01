@@ -11,6 +11,8 @@
     "jsx": "react",
     // use typescript to transpile jsx to js
     "target": "es5",
+    // adds full support for the ES2015 iteration protocol for ES3 and ES5 targets. 
+    "downlevelIteration": true,
     // specify ECMAScript target version
     "allowJs": true,
     // allow a partial TypeScript and JavaScript codebase
