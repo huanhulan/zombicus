@@ -10,7 +10,7 @@ const homoZombicusRight = require("./assets/homo-zombicus-right.png");
 const roadiusConium = require("./assets/roadius-conium.png");
 
 import Polygon from "polygon";
-import { Transaction } from "sodiumjs";
+import {Transaction} from "sodiumjs";
 import * as modernizrConfig from "../.modernizrrc.json";
 import World from "./classes/World";
 // import simple from "./frp/simple";
@@ -19,7 +19,7 @@ import World from "./classes/World";
 // import bite from "./frp/bite";
 import dynamic from "./frp/dynamic";
 import lib from "./lib";
-import { CharacterType, IPoint } from "./types";
+import {CharacterType, IPoint} from "./types";
 
 import "./style/index.scss";
 
@@ -114,14 +114,14 @@ if (supports.filter(support => !support).length) {
                                 .forEach(c => {
                                     if (c.velocity.x < 0) {
                                         ctx.drawImage(c.type === CharacterType.SAPIENS
-                                            ? homoSepientLeftPic
-                                            : homoZombicusLeftPic,
+                                                ? homoSepientLeftPic
+                                                : homoZombicusLeftPic,
                                             c.pos.x,
                                             c.pos.y);
                                     } else {
                                         ctx.drawImage(c.type === CharacterType.SAPIENS
-                                            ? homoSepientRightPic
-                                            : homoZombicusRightPic,
+                                                ? homoSepientRightPic
+                                                : homoZombicusRightPic,
                                             c.pos.x,
                                             c.pos.y);
                                     }

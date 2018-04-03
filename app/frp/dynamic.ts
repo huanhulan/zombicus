@@ -1,19 +1,16 @@
-import { Cell, CellLoop, Stream, StreamLoop, Unit, Operational } from 'sodiumjs';
-import { lambda1 } from 'sodiumjs';
+import {Cell, CellLoop, lambda1, Operational, Stream, StreamLoop, Unit} from "sodiumjs";
 import BitableHomoSapiens from "../classes/BitableHomoSapiens";
-import Character from '../classes/Character';
+import Character from "../classes/Character";
 import State from "../classes/GameState";
 import HomoZombicus from "../classes/HomoZombicus";
 import World from "../classes/World";
 import lib from "../lib";
-import { IPoint, ISize } from "../types";
+import {IPoint, ISize} from "../types";
 import tick from "./tick";
 
-const periodicTimer = (
-    cTime: Cell<number>,
-    sTick: Stream<Unit>,
-    period: number,
-) => {
+const periodicTimer = (cTime: Cell<number>,
+                       sTick: Stream<Unit>,
+                       period: number) => {
     const tAlarm: CellLoop<number> = new CellLoop();
     const sAlarm: Stream<number> =
         sTick.snapshot3(tAlarm, cTime,
@@ -27,18 +24,18 @@ const periodicTimer = (
 
 // dynamically add characters
 export default (windowSize: ISize, characterSize: ISize, world: World, period = 6) => {
-    const { cTime, sTick, fps } = tick();
+    const {cTime, sTick, fps} = tick();
     const cState = new CellLoop<State>();
     const cScene = new CellLoop<Character[]>();
     const center = {
-        x: world.windowSize.width / 2,
-        y: world.windowSize.height / 2,
+        x: world.windowSize.width / 2 - characterSize.width / 2,
+        y: world.windowSize.height / 2 - characterSize.height / 2,
     };
     const step = Math.ceil(1000 / fps) / 1000;
 
     let initState = new State();
     const firstZombie = new HomoZombicus(initState.nextID,
-        { x: windowSize.width / 8 * 1, y: windowSize.height / 8 * 5 },
+        {x: windowSize.width / 8, y: windowSize.height / 8 * 5},
         cTime, sTick, cScene, step, world);
     const sBite = new StreamLoop<number[]>();
     const sDestroy = new StreamLoop<number[]>();
@@ -54,21 +51,26 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
     ).map(
         lambda1(
             u => st => {
-                    const h = new BitableHomoSapiens(
-                        world, st.nextID, center, cTime, sTick,
-                        sBite, cScene, step);
-                    return st.add(h.cCharacter, h.sBite,
-                        State.fallDownHole(st.nextID, sTick, h.cCharacter,
-                            world));
+                const h = new BitableHomoSapiens(
+                    world, st.nextID, center, cTime, sTick,
+                    sBite, cScene, step);
+                return st.add(h.cCharacter, h.sBite,
+                    State.fallDownHole(st.nextID, sTick, h.cCharacter,
+                        world));
             },
-            [cScene]
-        )
+            [cScene, sBite, sDestroy, sTick],
+        ),
     );
 
-    const sRemove = sDestroy.map(ids => st => st.remove(ids));
+    const sRemove = sDestroy.map(
+        lambda1(
+            ids => st => st.remove(ids),
+            [cScene, sBite, sDestroy, sTick],
+        ),
+    );
 
     const sChange = sAdd.merge(sRemove,
-        (f1, f2) => a => f1(f2(a)));
+        (f1, f2) => a => f1.call(this, f2.call(this, a)));
 
     cState.loop(sChange.snapshot(cState, (f, st) => f(st)).hold(initState));
 
@@ -85,5 +87,5 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
     sBite.loop(Cell.switchS(csBite));
     sDestroy.loop(Cell.switchS(csDestroy));
 
-    return Operational.updates(cScene);
+    return Operational.value(cScene);
 };
