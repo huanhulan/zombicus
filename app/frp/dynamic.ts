@@ -1,4 +1,5 @@
 import { Cell, CellLoop, Stream, StreamLoop, Unit, Operational } from 'sodiumjs';
+import { lambda1 } from 'sodiumjs';
 import BitableHomoSapiens from "../classes/BitableHomoSapiens";
 import Character from '../classes/Character';
 import State from "../classes/GameState";
@@ -50,15 +51,18 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
         cTime,
         sTick,
         period,
-    ).map(u =>
-        st => {
-            const h = new BitableHomoSapiens(
-                world, st.nextID, center, cTime, sTick,
-                sBite, cScene, step);
-            return st.add(h.cCharacter, h.sBite,
-                State.fallDownHole(st.nextID, sTick, h.cCharacter,
-                    world));
-        },
+    ).map(
+        lambda1(
+            u => st => {
+                    const h = new BitableHomoSapiens(
+                        world, st.nextID, center, cTime, sTick,
+                        sBite, cScene, step);
+                    return st.add(h.cCharacter, h.sBite,
+                        State.fallDownHole(st.nextID, sTick, h.cCharacter,
+                            world));
+            },
+            [cScene]
+        )
     );
 
     const sRemove = sDestroy.map(ids => st => st.remove(ids));
