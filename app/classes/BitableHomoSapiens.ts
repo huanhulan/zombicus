@@ -1,4 +1,4 @@
-import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
+import { Cell, CellLoop, lambda2, Stream, Unit } from "sodiumjs";
 import { humanSpeed, zombieSpeed } from "../constants";
 import { IPoint } from "../types";
 import Character from "./Character";
@@ -28,7 +28,7 @@ class BietableHomoSapiens {
         const sBiteMe = sBite.filter(ids => ids.findIndex(id => id === self) !== -1).once();
 
         // Stream containing the new zombie
-        const sBecome = sBiteMe.snapshot(h.cCharacter, (id, ch) =>
+        const sBecome = sBiteMe.snapshot(h.cCharacter, lambda2((id, ch) =>
             new HomoZombicus(
                 self,
                 ch.pos, // Zombie starts at human’s current position
@@ -38,7 +38,7 @@ class BietableHomoSapiens {
                 step,
                 world,
                 zSpeed,
-            ),
+            ), [cTime, cScene, sTick]),
         );
 
         // Starts as HomoSapiens, and then turns into the character from sBecome

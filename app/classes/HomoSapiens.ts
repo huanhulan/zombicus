@@ -1,4 +1,4 @@
-import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
+import { Cell, CellLoop, lambda2, Stream, Unit } from "sodiumjs";
 import { humanSpeed } from "../constants";
 import { CharacterType, IPoint } from "../types";
 import Character from "./Character";
@@ -18,6 +18,7 @@ class HomoSapiens {
         speed = humanSpeed,
     ) {
         const cTraj = new CellLoop<Trajectory>();
+        const t0 = cTime.sample();
         const sChange = sTick.snapshot3(cTraj, cTime,
             (u, trajectory, time) =>
                 (world.hitsObstacle((trajectory.positionAt(time + step)))
@@ -27,10 +28,10 @@ class HomoSapiens {
         ).filterNotNull();
 
         cTraj.loop(
-            sChange.snapshot(cTraj, (u, trajectory) =>
-                new Trajectory(cTime.sample(),
-                    trajectory.positionAt(cTime.sample()), speed, step, world),
-            ).hold(new Trajectory(cTime.sample(), posInit, speed, step, world)),
+            sChange.snapshot3(cTraj, cTime, (u, trajectory, t) =>
+                new Trajectory(t,
+                    trajectory.positionAt(t), speed, step, world))
+                .hold(new Trajectory(t0, posInit, speed, step, world)),
         );
 
         this.cCharacter = cTraj.lift(cTime, (trajectory, t) =>

@@ -23,10 +23,9 @@ class HomoZombicus {
     ) {
         const cState = new CellLoop<State>();
         const emptyScene: Character[] = [];
-        const sChage = sTick.snapshot3(cScene, cState,
-            (u, scene, st) => {
-                const t = cTime.sample();
-
+        const t0 = cTime.sample();
+        const sChage = sTick.snapshot4(cScene, cState, cTime,
+            (u, scene, st, t) => {
                 return t - st.t0 >= zombieSensPeriod
                     ? new State(t, st.positionAt(t),
                         self, scene, speed, world, step)
@@ -35,19 +34,19 @@ class HomoZombicus {
         ).filterNotNull() as Stream<State>;
 
         // First time, decides based on an empty scene
-        cState.loop(sChage.hold(new State(cTime.sample(), posInit, self, emptyScene, speed, world, step)));
+        cState.loop(sChage.hold(new State(t0, posInit, self, emptyScene, speed, world, step)));
 
         // Output:  representation in the scene
         this.cCharacter = cState.lift(cTime, (st, t) =>
             new Character(self, CharacterType.ZOMBICUS,
-                st.positionAt(cTime.sample()), st.velocity));
+                st.positionAt(t), st.velocity));
 
         // Bites if a human is within 10 pixels
-        this.sBite = sTick.snapshot3(cScene, cState,
-            (u, scene, st) => {
+        this.sBite = sTick.snapshot4(cScene, cState, cTime,
+            (u, scene, st, t) => {
                 const victim: Optional<Character> = st.nearestSapiens(self, scene);
                 if (victim !== null) {
-                    const myPos = st.positionAt(cTime.sample());
+                    const myPos = st.positionAt(t);
                     if (Vector.distance(victim.pos, lib.p2v(myPos)) < 10) {
                         return victim.id;
                     }

@@ -42,9 +42,9 @@ class GameState {
         sBite: Stream<number>,
         sDestroys: Stream<number>,
     ) {
-        const tmpChars = this.chars;
-        const tmpSBites = this.sBites;
-        const tmpSDestroys = this.sDestroys;
+        const tmpChars = new Map(this.chars.entries());
+        const tmpSBites = new Map(this.sBites.entries());
+        const tmpSDestroys = new Map(this.sDestroys.entries());
 
         tmpChars.set(this.nextID, chr);
         tmpSBites.set(this.nextID, sBite);
@@ -54,9 +54,9 @@ class GameState {
     }
 
     public remove(ids: number[]) {
-        const tmpChars = this.chars;
-        const tmpSBites = this.sBites;
-        const tmpSDestroys = this.sDestroys;
+        const tmpChars = new Map(this.chars.entries());
+        const tmpSBites = new Map(this.sBites.entries());
+        const tmpSDestroys = new Map(this.sDestroys.entries());
 
         ids.forEach(id => {
             tmpChars.delete(id);
@@ -64,7 +64,7 @@ class GameState {
             tmpSDestroys.delete(id);
         });
 
-        return new GameState(this.nextID + 1, tmpChars, tmpSBites, tmpSDestroys);
+        return new GameState(this.nextID, tmpChars, tmpSBites, tmpSDestroys);
     }
 }
 

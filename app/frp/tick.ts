@@ -8,8 +8,9 @@ export default (fps = defaultFps) => {
     const t0 = sys.time.sample();
     const cTargetTime = new CellLoop<number>();
     const sTick = new StreamLoop<Unit>();
-    const sTimeIdeal = sys.at(cTargetTime).map(t => t + toWait);
+    const sTimeIdeal = sys.at(cTargetTime);
     const cTime = cTargetTime.map(t => (t - t0) * 0.001);
+    sTimeIdeal.listen(i => i);
     /**
      * Ideally, the cTarget would be a sequence with step of 17,
      * but since the javascript is single process, there will
