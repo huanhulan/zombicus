@@ -83,5 +83,5 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
     sDestroy.loop(Cell.switchS(csDestroy));
 
     return Operational.value(cScene).map(lambda1(i => i,
-        [csBite, csDestroy]));
+        [csBite, csDestroy, sTick, cTime]));
 };
