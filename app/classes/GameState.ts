@@ -1,15 +1,13 @@
-import { Cell, Stream, Unit } from "sodiumjs";
+import {Cell, Stream, Unit} from "sodiumjs";
 import Character from "../classes/Character";
 import World from "../classes/World";
 
 class GameState {
-    public static fallDownHole(
-        self: number,
-        sTick: Stream<Unit>,
-        cCharacter: Cell<Character>,
-        world: World,
-    ) {
-        return sTick.snapshot(
+    public static fallDownHole(self: number,
+                               sTick: Stream<Unit>,
+                               cCharacter: Cell<Character>,
+                               world: World) {
+        const sRes = sTick.snapshot(
             cCharacter,
             (u, ch) => world.hitsHole({
                 x: ch.pos.x + world.characterSize.width / 2,
@@ -17,7 +15,9 @@ class GameState {
             })
                 ? self
                 : null,
-        ).filterNotNull() as Stream<number>;
+        ).filterNotNull();
+        sRes.listen(i => i);
+        return sRes as Stream<number>;
     }
 
     public nextID: number;
@@ -25,23 +25,19 @@ class GameState {
     public sBites: Map<number, Stream<number>>;
     public sDestroys: Map<number, Stream<number>>;
 
-    constructor(
-        nextID = 0,
-        chars = new Map(),
-        sBites = new Map(),
-        sDestroys = new Map(),
-    ) {
+    constructor(nextID = 0,
+                chars = new Map(),
+                sBites = new Map(),
+                sDestroys = new Map()) {
         this.nextID = nextID;
         this.chars = chars;
         this.sBites = sBites;
         this.sDestroys = sDestroys;
     }
 
-    public add(
-        chr: Cell<Character>,
-        sBite: Stream<number>,
-        sDestroys: Stream<number>,
-    ) {
+    public add(chr: Cell<Character>,
+               sBite: Stream<number>,
+               sDestroys: Stream<number>) {
         const tmpChars = new Map(this.chars.entries());
         const tmpSBites = new Map(this.sBites.entries());
         const tmpSDestroys = new Map(this.sDestroys.entries());

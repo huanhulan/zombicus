@@ -10,7 +10,6 @@ export default (fps = defaultFps) => {
     const sTick = new StreamLoop<Unit>();
     const sTimeIdeal = sys.at(cTargetTime);
     const cTime = cTargetTime.map(t => (t - t0) * 0.001);
-    sTimeIdeal.listen(i => i);
     /**
      * Ideally, the cTarget would be a sequence with step of 17,
      * but since the javascript is single process, there will
@@ -19,6 +18,9 @@ export default (fps = defaultFps) => {
      */
     cTargetTime.loop(sTimeIdeal.map(t => t + toWait).hold(t0));
     sTick.loop(sTimeIdeal.map(t => Unit.UNIT));
+
+    sTimeIdeal.listen(i => i);
+    sTick.listen(i => i);
 
     return {
         cTime,

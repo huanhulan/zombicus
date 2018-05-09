@@ -1,7 +1,7 @@
-import { Cell, Stream } from "sodiumjs";
+import {Cell, lambda2, Stream} from "sodiumjs";
 import Vector from "vectory";
-import { holeColor } from "../constants";
-import { IPoint } from "../types";
+import {holeColor} from "../constants";
+import {IPoint} from "../types";
 
 // using balanced binary tree to merge the streams for efficiency.
 function balanceMerge<T>(input: Array<Stream<T>>, f) {
@@ -39,22 +39,28 @@ const lib = {
         }) as Promise<HTMLImageElement>;
     },
     balanceMerge,
-    sequence<A>(input: Array<Cell<A>>): Cell<A[]> {
+    /**
+     * @param input
+     * @param deps
+     * @returns {Cell}
+     * We need to inject the dependencies manually to avoid the accidentally GC of the Cell causing by the JS engine.
+     */
+        sequence<A>(input: Array<Cell<A>>, deps?: Array<Stream<any> | Cell<any>>): Cell<A[]> {
         let out = new Cell([] as A[]);
 
         for (const c of input) {
             out = out.lift(c,
-                (list0, a) => {
+                lambda2((list0, a) => {
                     const list = [...list0];
                     list.push(a);
                     return list;
-                });
+                }, Array.isArray(deps) ? deps : []));
         }
         return out;
     },
     drawHoles(ctx: CanvasRenderingContext2D, path: IPoint[], icon: HTMLImageElement) {
         if (path.length) {
-            const { x, y } = path[0];
+            const {x, y} = path[0];
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.fillStyle = holeColor;
@@ -73,7 +79,7 @@ const lib = {
         if (xs.length !== ys.length) {
             throw new Error("the length of coordinate list must be equal to each other.");
         }
-        return xs.map((x, idx) => ({ x, y: ys[idx] }));
+        return xs.map((x, idx) => ({x, y: ys[idx]}));
     },
 };
 

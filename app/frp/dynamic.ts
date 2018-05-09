@@ -1,16 +1,16 @@
-import { Cell, CellLoop, lambda1, Operational, Stream, StreamLoop, Unit, lambda2 } from "sodiumjs";
+import {Cell, CellLoop, lambda1, lambda2, Operational, Stream, StreamLoop, Unit} from "sodiumjs";
 import BitableHomoSapiens from "../classes/BitableHomoSapiens";
 import Character from "../classes/Character";
 import State from "../classes/GameState";
 import HomoZombicus from "../classes/HomoZombicus";
 import World from "../classes/World";
 import lib from "../lib";
-import { IPoint, ISize } from "../types";
+import {ISize} from "../types";
 import tick from "./tick";
 
 const periodicTimer = (cTime: Cell<number>,
-    sTick: Stream<Unit>,
-    period: number) => {
+                       sTick: Stream<Unit>,
+                       period: number) => {
     const tAlarm: CellLoop<number> = new CellLoop();
     const sAlarm: Stream<number> =
         sTick.snapshot3(tAlarm, cTime,
@@ -24,7 +24,7 @@ const periodicTimer = (cTime: Cell<number>,
 
 // dynamically add characters
 export default (windowSize: ISize, characterSize: ISize, world: World, period = 6) => {
-    const { cTime, sTick, fps } = tick();
+    const {cTime, sTick, fps} = tick();
     const cState = new CellLoop<State>();
     const cScene = new CellLoop<Character[]>();
     const center = {
@@ -35,7 +35,7 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
 
     let initState = new State();
     const firstZombie = new HomoZombicus(initState.nextID,
-        { x: windowSize.width / 8, y: windowSize.height / 8 * 5 },
+        {x: windowSize.width / 8, y: windowSize.height / 8 * 5},
         cTime, sTick, cScene, step, world);
     const sBite = new StreamLoop<number[]>();
     const sDestroy = new StreamLoop<number[]>();
@@ -69,7 +69,9 @@ export default (windowSize: ISize, characterSize: ISize, world: World, period = 
 
     cState.loop(sChange.snapshot(cState, lambda2((f, st) => f(st), [sTick, sBite, sDestroy, cTime])).hold(initState));
 
-    const ccChars: Cell<Cell<Character[]>> = cState.map(st => lib.sequence([...st.chars.values()]));
+    const ccChars: Cell<Cell<Character[]>> = cState.map(lambda1(st => lib.sequence([...st.chars.values()],
+        [cState, sTick, sBite, sDestroy, cTime]),
+        [sChange, sAdd, sRemove, cTime, sTick]));
     const csBite = cState.map(lambda1(st => lib.balanceMerge(
         [...st.sBites.values()],
         (a, b) => a.concat(b)), [sBite]));

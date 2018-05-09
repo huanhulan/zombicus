@@ -1,8 +1,8 @@
-import { Cell, CellLoop, Stream, Unit } from "sodiumjs";
+import {Cell, CellLoop, Stream, Unit} from "sodiumjs";
 import Vector from "vectory";
-import { zombieSensPeriod, zombieSpeed } from "../constants";
+import {zombieSensPeriod, zombieSpeed} from "../constants";
 import lib from "../lib";
-import { CharacterType, IPoint, Optional } from "../types";
+import {CharacterType, IPoint, Optional} from "../types";
 import Character from "./Character";
 import State from "./State";
 import World from "./World";
@@ -11,16 +11,14 @@ class HomoZombicus {
     public cCharacter: Cell<Character>;
     public sBite: Stream<number>;
 
-    constructor(
-        self: number,
-        posInit: IPoint,
-        cTime: Cell<number>,
-        sTick: Stream<Unit>,
-        cScene: Cell<Character[]>,
-        step: number,
-        world: World,
-        speed = zombieSpeed,
-    ) {
+    constructor(self: number,
+                posInit: IPoint,
+                cTime: Cell<number>,
+                sTick: Stream<Unit>,
+                cScene: Cell<Character[]>,
+                step: number,
+                world: World,
+                speed = zombieSpeed) {
         const cState = new CellLoop<State>();
         const emptyScene: Character[] = [];
         const t0 = cTime.sample();
@@ -54,6 +52,9 @@ class HomoZombicus {
                 return null;
             },
         ).filterNotNull() as Stream<number>;
+
+        sChage.listen(i => i);
+        this.sBite.listen(i => i);
     }
 }
 
